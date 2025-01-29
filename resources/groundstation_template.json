@@ -1,0 +1,32 @@
+[
+    {
+        "name":"Full Name",
+        "abbreviation":"FLN",
+        "site":{
+            "lat":69.69,
+            "lon":169.420,
+            "amsl":2300,
+        },
+        "uplink":
+        [
+            {
+                "band":"Band X in megahertz",
+                "frequency high":10000,
+                "frequency low":120000
+            }
+        ],
+        "downlink":
+        [
+            {
+                "band":"Band X in megahertz",
+                "frequency high":10500,
+                "frequency low":12500
+            },
+            {
+                "band":"Band X+ in megahertz",
+                "frequency high":24500,
+                "frequency low":28500
+            }
+        ]
+    }
+]
