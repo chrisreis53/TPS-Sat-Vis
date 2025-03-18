@@ -67,7 +67,7 @@ const rad2deg = 180 / Math.PI;
     const groundStation = { ...groundStationPosition };
     groundStation.latitude *= deg2rad;
     groundStation.longitude *= deg2rad;
-    groundStation.amsl /= 1000;
+    groundStation.height /= 1000;
 
     const date = new Date(startDate);
     const passes = [];

@@ -241,8 +241,9 @@
         request.open("GET", "./resources/groundstations.json", false);
         request.send(null)
         var my_JSON_object = JSON.parse(request.responseText);
-        alert (my_JSON_object.groundstations[0]);
-        console.log(my_JSON_object.groundstations[0]);
+        alert (my_JSON_object.groundstations[0].site);
+        console.log(my_JSON_object.groundstations[0].site);
+        console.log(groundstationpos);
 
         const split = defaultTLE.split('\n').map(line => line.trim());
         const name = split[0];
@@ -250,7 +251,9 @@
         
         orbit = new Orbit(name,defaultTLE);
 
+        console.log(orbit.computePassesElevation(my_JSON_object.groundstations[0].site));
         console.log(orbit.computePassesElevation(groundstationpos));
+        
 
     </script>
 </body>
