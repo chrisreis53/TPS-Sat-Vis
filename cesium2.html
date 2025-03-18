@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Satellite Tracker with Cesium and satellite.js</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/satellite.js@^5.0.0/dist/satellite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="Orbit.js"></script>
+
+    <style>
+        /* (Same styles as before) */
+        html, body, #cesiumContainer {
+            width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1;
+            max-width: 400px;
+        }
+        #satdata {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1;
+            max-width: 400px;
+        }
+        #errorDisplay {
+            color: red;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div id="cesiumContainer"></div>
+    <div id="controls">
+        <label for="tleInput">Enter TLE Data:</label><br>
+        <textarea id="tleInput" placeholder="Paste TLE data here..."></textarea><br>
+        <div id="errorDisplay"></div>
+        <button id="trackButton">Track Satellite</button>
+        <button id="clearButton">Clear Track</button>
+    </div>
+    <div id="satdata">
+        <label for="lat">Latitude</label>
+        <label for="lon">Longitude</label>
+    </div>
+
+    <script>
+        // Initialize Cesium viewer
+        Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjNjMyMDQ3My01ZTRmLTQyZmEtYjJmOC00MjYyNDRmNzUxN2QiLCJpZCI6MTI1MjQyLCJpYXQiOjE2NzY2NTUzNDl9.A82KJRL0TeA4PqqhA9agfHqMTSpXsg9DSyZKm2KM_4Q'; // Replace with your Cesium Ion access token
+
+        var currentTime = Cesium.JulianDate.fromDate(new Date());
+
+        var clock = new Cesium.Clock({
+            startTime : currentTime,
+            currentTime : currentTime,
+            clockStep : Cesium.ClockStep.SYSTEM_CLOCK
+        });
+
+        const viewer = new Cesium.Viewer('cesiumContainer', {
+            terrain: Cesium.Terrain.fromWorldTerrain(),
+            clockViewModel: new Cesium.ClockViewModel(clock),
+        });
+
+        let trackedEntity = null;
+
+        function trackSatellite(tleLine1, tleLine2) {
+            try {
+                document.getElementById('errorDisplay').textContent = "";
+
+                if (trackedEntity) {
+                    viewer.entities.remove(trackedEntity);
+                    trackedEntity = null;
+                }
+
+                const satrec = satellite.twoline2satrec(tleLine1, tleLine2);
+                if (!satrec) {
+                    throw new Error("Failed to parse TLE data.");
+                }
+
+                const duration = 60 * 90; // 90 minutes
+                const start = Cesium.JulianDate.now();
+                const stop = Cesium.JulianDate.addMinutes(start, duration, new Cesium.JulianDate());
+
+                viewer.clock.startTime = start.clone();
+                viewer.clock.stopTime = stop.clone();
+                viewer.clock.currentTime = start.clone();
+                viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
+                viewer.clock.multiplier = 1;
+
+                const positionProperty = new Cesium.SampledPositionProperty();
+
+                for (let i = 0; i <= duration; i += 60) {
+                    const time = Cesium.JulianDate.addSeconds(start, i, new Cesium.JulianDate());
+                    const jsDate = Cesium.JulianDate.toDate(time);
+
+                    const positionAndVelocity = satellite.propagate(satrec, jsDate);
+                    if (!positionAndVelocity) {
+                        console.warn(`Could not propagate at time: ${jsDate}`);
+                        continue;
+                    }
+
+                    const gmst = satellite.gstime(jsDate);
+                    const positionEci = positionAndVelocity.position;
+                    if (!positionEci) {
+                        console.warn(`No position at time: ${jsDate}`);
+                        continue;
+                    }
+
+                    // ECI to ECF (using satellite.js)
+                    const positionEcf = satellite.eciToEcf(positionEci, gmst);
+
+                    // ECF to Cartesian3 (using Cesium) - THE KEY CHANGE
+                    const cartesianPosition = Cesium.Cartesian3.fromElements(
+                        positionEcf.x * 1000,  // km to meters
+                        positionEcf.y * 1000,
+                        positionEcf.z * 1000
+                    );
+
+                    // Convert Cartesian3 to Geodetic (using Cesium)
+                    const cartographicPosition = Cesium.Cartographic.fromCartesian(cartesianPosition);
+
+                    // Add the sample to the position property
+                    positionProperty.addSample(time, cartesianPosition);
+                }
+                trackedEntity = viewer.entities.add({
+                    name: 'Satellite',
+                    position: positionProperty,
+                    point: {
+                        pixelSize: 10,
+                        color: Cesium.Color.RED,
+                    },
+                    path: {
+                        resolution: 120,
+                        material: new Cesium.PolylineGlowMaterialProperty({
+                            glowPower: 0.3,
+                            color: Cesium.Color.YELLOW,
+                        }),
+                        width: 3,
+                    },
+                });
+
+                viewer.trackedEntity = trackedEntity;
+
+            } catch (error) {
+                document.getElementById('errorDisplay').textContent = "Error processing TLE: " + error.message;
+                console.error(error);
+            }
+        }
+
+      function clearTrack() {
+            if (trackedEntity) {
+                viewer.entities.remove(trackedEntity);
+                trackedEntity = null;
+                viewer.trackedEntity = undefined; // Explicitly untrack
+            }
+             document.getElementById('errorDisplay').textContent = "";
+        }
+
+
+        document.getElementById('trackButton').addEventListener('click', function() {
+            const tleData = document.getElementById('tleInput').value.trim();
+            const lines = tleData.split('\n').map(line => line.trim());
+
+            if (lines.length < 2 || lines.length > 3) {
+              document.getElementById('errorDisplay').textContent = "Invalid TLE format: TLE must have 2 or 3 lines.";
+              return;
+            }
+            if (lines.length === 3) {
+              lines.shift();
+            }
+
+            function isValidTLELine(line) {
+                if (line.length !== 69) {
+                    return false;
+                }
+
+                let checksum = 0;
+                for (let i = 0; i < 68; i++) {
+                    const char = line[i];
+                    if (char >= '0' && char <= '9') {
+                        checksum += parseInt(char, 10);
+                    } else if (char === '-') {
+                        checksum += 1; // Minus sign contributes 1
+                    }
+                    // Ignore spaces and plus signs; they don't contribute to the checksum
+                }
+
+                const expectedChecksum = parseInt(line[68], 10);
+                return (checksum % 10) === expectedChecksum;
+            }
+
+            if (!isValidTLELine(lines[0]) || !isValidTLELine(lines[1])) {
+              document.getElementById('errorDisplay').textContent = "Invalid TLE format: Checksum(s) failed.";
+              return;
+            }
+
+            trackSatellite(lines[0], lines[1]);
+        });
+
+        document.getElementById('clearButton').addEventListener('click', clearTrack);
+
+        const defaultTLE = `AFRL-XVI
+1 56942U 23084L   25044.77485015  .00035141  00000-0  69126-3 0  9996
+2 56942  97.5545 177.0950 0003560 243.9998 116.0885 15.47184083 93305`;
+        document.getElementById('tleInput').value = defaultTLE;
+
+        groundstationpos = {
+            "latitude": 34.1746,
+            "longitude": -83.6718,
+            "height": 204.85
+        }
+
+        var request = new XMLHttpRequest();
+        request.open("GET", "./resources/groundstations.json", false);
+        request.send(null)
+        var my_JSON_object = JSON.parse(request.responseText);
+        alert (my_JSON_object.groundstations[0]);
+        console.log(my_JSON_object.groundstations[0]);
+
+        const split = defaultTLE.split('\n').map(line => line.trim());
+        const name = split[0];
+        const pass_tle = split[1] + "\n" + split[2];
+        
+        orbit = new Orbit(name,defaultTLE);
+
+        console.log(orbit.computePassesElevation(groundstationpos));
+
+    </script>
+</body>
+</html>
