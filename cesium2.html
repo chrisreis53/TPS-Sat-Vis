@@ -231,21 +231,11 @@
 2 56942  97.5545 177.0950 0003560 243.9998 116.0885 15.47184083 93305`;
         document.getElementById('tleInput').value = defaultTLE;
 
-        groundstationpos = {
-            "latitude": 34.1746,
-            "longitude": -83.6718,
-            "height": 204.85
-        }
-
         var request = new XMLHttpRequest();
         request.open("GET", "./resources/groundstations.json", false);
         request.send(null)
         var my_JSON_object = JSON.parse(request.responseText);
         // console.log(my_JSON_object.groundstations[0].site);
-
-        const split = defaultTLE.split('\n').map(line => line.trim());
-        const name = split[0];
-        const pass_tle = split[1] + "\n" + split[2];
         
         orbit = new Orbit(name,defaultTLE);
 
