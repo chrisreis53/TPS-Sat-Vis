@@ -1,0 +1,182 @@
+{
+    "version":0.1,
+    "description":"ViaSat Sites",
+    "source":"https://apps.fcc.gov/els/GetAtt.html?id=311987&x=.",
+    "groundstations":[
+        {
+            "name":"Pendegrass, GA, USA",
+            "abbreviation":"PGG",
+            "site":{
+                "latitudeitude":34.1746,
+                "longitude":-83.6718,
+                "amsl":204.85
+            },
+            "uplink":
+            [
+                {
+                    "band":"S-band",
+                    "frequency high":2025,
+                    "frequency low":2110
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"S-band",
+                    "frequency high":2200,
+                    "frequency low":2290
+                }
+            ]
+        },
+        {
+            "name":"Guildford, UK",
+            "abbreviation":"GDD",
+            "site":{
+                "latitude":51.2420,
+                "longitude":-0.6186,
+                "amsl":136.67
+            },
+            "uplink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ]
+        },
+        {
+            "name":"Alice Springs, AU",
+            "abbreviation":"ASP",
+            "site":{
+                "latitude":-23.7586,
+                "longitude":133.8809,
+                "amsl":576.74
+            },
+            "uplink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ]
+        },
+        {
+            "name":"",
+            "abbreviation":"",
+            "site":{
+                "latitude":0,
+                "longitude":0,
+                "amsl":0
+            },
+            "uplink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ]
+        },
+        {
+            "name":"",
+            "abbreviation":"",
+            "site":{
+                "latitude":0,
+                "longitude":0,
+                "amsl":0
+            },
+            "uplink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ]
+        },
+        {
+            "name":"",
+            "abbreviation":"",
+            "site":{
+                "latitude":0,
+                "longitude":0,
+                "amsl":0
+            },
+            "uplink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ]
+        },
+        {
+            "name":"",
+            "abbreviation":"",
+            "site":{
+                "latitude":0,
+                "longitude":0,
+                "amsl":0
+            },
+            "uplink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"",
+                    "frequency high":0,
+                    "frequency low":0
+                }
+            ]
+        }
+    ]
+}
