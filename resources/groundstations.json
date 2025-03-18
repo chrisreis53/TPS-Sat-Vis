@@ -1,5 +1,5 @@
 {
-    "version":0.1,
+    "version":0.2,
     "description":"ViaSat Sites",
     "source":"https://apps.fcc.gov/els/GetAtt.html?id=311987&x=.",
     "groundstations":[
@@ -7,9 +7,9 @@
             "name":"Pendegrass, GA, USA",
             "abbreviation":"PGG",
             "site":{
-                "latitudeitude":34.1746,
+                "latitude":34.1746,
                 "longitude":-83.6718,
-                "amsl":204.85
+                "height":204.85
             },
             "uplink":
             [
@@ -34,7 +34,7 @@
             "site":{
                 "latitude":51.2420,
                 "longitude":-0.6186,
-                "amsl":136.67
+                "height":136.67
             },
             "uplink":
             [
@@ -59,7 +59,7 @@
             "site":{
                 "latitude":-23.7586,
                 "longitude":133.8809,
-                "amsl":576.74
+                "height":576.74
             },
             "uplink":
             [
@@ -84,7 +84,7 @@
             "site":{
                 "latitude":0,
                 "longitude":0,
-                "amsl":0
+                "height":0
             },
             "uplink":
             [
@@ -109,7 +109,7 @@
             "site":{
                 "latitude":0,
                 "longitude":0,
-                "amsl":0
+                "height":0
             },
             "uplink":
             [
@@ -134,7 +134,7 @@
             "site":{
                 "latitude":0,
                 "longitude":0,
-                "amsl":0
+                "height":0
             },
             "uplink":
             [
@@ -159,7 +159,7 @@
             "site":{
                 "latitude":0,
                 "longitude":0,
-                "amsl":0
+                "height":0
             },
             "uplink":
             [
