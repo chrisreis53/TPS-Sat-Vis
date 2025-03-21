@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/satellite.js@^5.0.0/dist/satellite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="Orbit.js"></script>
+    <script src="inc/czml_writer.js"></script>
 
     <style>
         /* (Same styles as before) */
@@ -242,7 +243,9 @@
         my_JSON_object.groundstations.forEach(element => {
             console.log(element.abbreviation);
             console.log(orbit.computePassesElevation(element.site));
-        });      
+        });
+        
+        plotSitesFromJson(my_JSON_object.groundstations, viewer);
 
     </script>
 </body>
