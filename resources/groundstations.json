@@ -1,5 +1,5 @@
 {
-    "version":0.2,
+    "version":0.3,
     "description":"ViaSat Sites",
     "source":"https://apps.fcc.gov/els/GetAtt.html?id=311987&x=.",
     "groundstations":[
@@ -39,17 +39,17 @@
             "uplink":
             [
                 {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
+                    "band":"S-band",
+                    "frequency high":2025,
+                    "frequency low":2110
                 }
             ],
             "downlink":
             [
                 {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
+                    "band":"S-band",
+                    "frequency high":2200,
+                    "frequency low":2290
                 }
             ]
         },
@@ -64,23 +64,113 @@
             "uplink":
             [
                 {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
+                    "band":"S-band",
+                    "frequency high":2110,
+                    "frequency low":2025
                 }
             ],
             "downlink":
             [
                 {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
+                    "band":"S-band",
+                    "frequency high":2290,
+                    "frequency low":2200
+                },
+                {
+                    "band":"Ka-band",
+                    "frequency high":27000,
+                    "frequency low":25500
                 }
             ]
         },
         {
-            "name":"",
-            "abbreviation":"",
+            "name":"Accra, Ghana",
+            "abbreviation":"ACC",
+            "site":{
+                "latitude":5.7499,
+                "longitude":-0.30619,
+                "height":91
+            },
+            "uplink":
+            [
+                {
+                    "band":"S-band",
+                    "frequency high":2110,
+                    "frequency low":2025
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"S-band",
+                    "frequency high":2290,
+                    "frequency low":2200
+                },
+                {
+                    "band":"Ka-band",
+                    "frequency high":27000,
+                    "frequency low":25500
+                }
+            ]
+        },
+        {
+            "name":"Cordoba, AR",
+            "abbreviation":"COR",
+            "site":{
+                "latitude":-31.5242,
+                "longitude":-64.4636,
+                "height":730
+            },
+            "uplink":
+            [
+                {
+                    "band":"S-band",
+                    "frequency high":2025,
+                    "frequency low":2110
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"S-band",
+                    "frequency high":2200,
+                    "frequency low":2290
+                }
+            ]
+        },
+        {
+            "name":"Ojebyn, Sweden",
+            "abbreviation":"OJY",
+            "site":{
+                "latitude":65.336978,
+                "longitude":21.426067,
+                "height":12
+            },
+            "uplink":
+            [
+                {
+                    "band":"S-band",
+                    "frequency high":2110,
+                    "frequency low":2025
+                }
+            ],
+            "downlink":
+            [
+                {
+                    "band":"S-band",
+                    "frequency high":2290,
+                    "frequency low":2200
+                },
+                {
+                    "band":"Ka-band",
+                    "frequency high":27000,
+                    "frequency low":25500
+                }
+            ]
+        },
+        {
+            "name":"Pretoria, SA",
+            "abbreviation":"PRY",
             "site":{
                 "latitude":0,
                 "longitude":0,
@@ -89,92 +179,22 @@
             "uplink":
             [
                 {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
+                    "band":"S-band",
+                    "frequency high":2110,
+                    "frequency low":2025
                 }
             ],
             "downlink":
             [
                 {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
-                }
-            ]
-        },
-        {
-            "name":"",
-            "abbreviation":"",
-            "site":{
-                "latitude":0,
-                "longitude":0,
-                "height":0
-            },
-            "uplink":
-            [
+                    "band":"S-band",
+                    "frequency high":2290,
+                    "frequency low":2200
+                },
                 {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
-                }
-            ],
-            "downlink":
-            [
-                {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
-                }
-            ]
-        },
-        {
-            "name":"",
-            "abbreviation":"",
-            "site":{
-                "latitude":0,
-                "longitude":0,
-                "height":0
-            },
-            "uplink":
-            [
-                {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
-                }
-            ],
-            "downlink":
-            [
-                {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
-                }
-            ]
-        },
-        {
-            "name":"",
-            "abbreviation":"",
-            "site":{
-                "latitude":0,
-                "longitude":0,
-                "height":0
-            },
-            "uplink":
-            [
-                {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
-                }
-            ],
-            "downlink":
-            [
-                {
-                    "band":"",
-                    "frequency high":0,
-                    "frequency low":0
+                    "band":"Ka-band",
+                    "frequency high":27000,
+                    "frequency low":25500
                 }
             ]
         }
