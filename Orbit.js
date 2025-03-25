@@ -58,12 +58,14 @@ const rad2deg = 180 / Math.PI;
   }
 
   computePassesElevation(
+    groundStationName,
     groundStationPosition,
     startDate = dayjs().toDate(),
     endDate = dayjs(startDate).add(7, "day").toDate(),
     minElevation = 5,
     maxPasses = 50,
   ) {
+    const name = groundStationName;
     const groundStation = { ...groundStationPosition };
     groundStation.latitude *= deg2rad;
     groundStation.longitude *= deg2rad;
@@ -83,7 +85,7 @@ const rad2deg = 180 / Math.PI;
         if (!ongoingPass) {
           // Start of new pass
           pass = {
-            name: this.name,
+            site: name,
             start: date.getTime(),
             azimuthStart: lookAngles.azimuth,
             maxElevation: elevation,
