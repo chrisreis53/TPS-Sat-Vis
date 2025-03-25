@@ -36,8 +36,6 @@ function build_schedule(container_id, groundstations, pass_data, options, ) {
     });
     var items = new vis.DataSet(passes);
 
-    console.log(passes);
-
     // Create a Timeline
     var timeline = new vis.Timeline(container_id, items, group, options);
     
