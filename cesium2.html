@@ -242,7 +242,7 @@
 
         my_JSON_object.groundstations.forEach(element => {
             console.log(element.abbreviation);
-            console.log(orbit.computePassesElevation(element.site));
+            console.log(orbit.computePassesElevation(element.abbreviation, element.site));
         });
         
         plotSitesFromJson(my_JSON_object.groundstations, viewer);
