@@ -9,7 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="Orbit.js"></script>
     <script src="inc/czml_writer.js"></script>
-
+    <script src="inc/scheduler.js"></script>
+    <link rel="stylesheet" href="./resources/dark.css">
     <style>
         /* (Same styles as before) */
         html, body, #cesiumContainer {
@@ -71,6 +72,9 @@
         <label for="lat">Latitude</label>
         <label for="lon">Longitude</label>
     </div>
+    <div id="passdata">
+        <h3>PASS DATA</h3>
+    </div>
 
     <script>
         // Initialize Cesium viewer
@@ -87,6 +91,8 @@
         const viewer = new Cesium.Viewer('cesiumContainer', {
             terrain: Cesium.Terrain.fromWorldTerrain(),
             clockViewModel: new Cesium.ClockViewModel(clock),
+            timeline:false,
+            animation:false,
         });
 
         let trackedEntity = null;
