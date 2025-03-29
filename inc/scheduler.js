@@ -8,7 +8,7 @@ function build_schedule(container_id, groundstations, pass_data, options, ) {
         return found.id;
     }
 
-    var i = 0;
+    var i = 1;
     stations = [];
     groundstations.forEach(station => {
         stations.push({
@@ -21,13 +21,13 @@ function build_schedule(container_id, groundstations, pass_data, options, ) {
     var group = new vis.DataSet(stations);
 
     //Add Passes
-    var j = 0;
+    var j = 100;
     passes = [];
     pass_data.forEach(pass => {
         passes.push({
             id: j,
             editable: false,
-            content:"Max El: ",
+            content: "Max El:" + pass.maxElevation +"°</p>",
             start:new Date(pass.start),
             end:new Date(pass.end),
             group:findObjectById(stations,pass.site)
@@ -36,7 +36,16 @@ function build_schedule(container_id, groundstations, pass_data, options, ) {
     });
     var items = new vis.DataSet(passes);
 
+    // specify options
+    var options = {
+        showCurrentTime: true,
+        start: dayjs().subtract(30,'minutes').toDate(),
+        end: dayjs().add(4,'hours').toDate()
+    }
+
     // Create a Timeline
     var timeline = new vis.Timeline(container_id, items, group, options);
+
+    return timeline;
     
 }
