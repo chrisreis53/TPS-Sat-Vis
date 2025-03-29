@@ -1,5 +1,5 @@
 {
-    "version":0.3,
+    "version":0.4,
     "description":"ViaSat Sites",
     "source":"https://apps.fcc.gov/els/GetAtt.html?id=311987&x=.",
     "groundstations":[
@@ -172,8 +172,8 @@
             "name":"Pretoria, SA",
             "abbreviation":"PRY",
             "site":{
-                "latitude":0,
-                "longitude":0,
+                "latitude":-25.883333,
+                "longitude":27.7,
                 "height":0
             },
             "uplink":
