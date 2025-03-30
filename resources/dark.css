@@ -31,14 +31,21 @@ div.vis-readonly {
 #passdata{
     position: fixed;
     margin: 0 auto;
-    width: 85%;
+    width: 90%;
     border: 3px solid whitesmoke;
     border-radius: 5px;
     padding: 10px;
-    bottom: 10px;
+    bottom: 100px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-55%, -50%);
     /* background-color: rgba(255, 255, 255, 0.8); */
     z-index: 1;
-    max-width: 400px;
+    /* max-width: 85%; */
+    max-height: 10%;
+    font-size: 8pt;
+    color: whitesmoke;
+    background-color: rgb(30, 30, 30);
+    opacity: 25%;
+    
 }
+
