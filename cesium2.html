@@ -5,6 +5,7 @@
     <title>Satellite Tracker with Cesium and satellite.js</title>
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Cesium.js"></script>
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.115/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <script src="https://visjs.github.io/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/satellite.js@^5.0.0/dist/satellite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script src="Orbit.js"></script>
@@ -73,7 +74,7 @@
         <label for="lon">Longitude</label>
     </div>
     <div id="passdata">
-        <h3>PASS DATA</h3>
+        <p>PASS DATA</p>
     </div>
 
     <script>
@@ -246,10 +247,25 @@
         
         orbit = new Orbit(name,defaultTLE);
 
+        //Compute Pass Data
+        var data = [];
         my_JSON_object.groundstations.forEach(element => {
-            console.log(element.abbreviation);
-            console.log(orbit.computePassesElevation(element.abbreviation, element.site));
+            // console.log(element.abbreviation);
+            passes = orbit.computePassesElevation(element.abbreviation, element.site, startDate = dayjs().toDate(), endDate=dayjs(dayjs().toDate()).add(1, "day").toDate());
+            passes.forEach(element => {
+                data.push(element);
+            });
         });
+
+        //Add Pass Schedule to scene:
+        var container = document.getElementById("passdata");
+        var options = {
+            showCurrentTime: true,
+            start: dayjs().subtract(30,'minutes').toDate(),
+            end: dayjs().add(8,'hours').toDate(),
+            height: "10%",
+        };
+        var timeline = build_schedule(container, my_JSON_object.groundstations, data, options);
         
         plotSitesFromJson(my_JSON_object.groundstations, viewer);
 
