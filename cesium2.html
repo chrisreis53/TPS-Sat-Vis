@@ -27,7 +27,7 @@
             z-index: 1;
             max-width: 400px;
         }
-        #satdata {
+        /* #satdata {
             position: absolute;
             top: 50px;
             right: 10px;
@@ -36,7 +36,7 @@
             border-radius: 5px;
             z-index: 1;
             max-width: 400px;
-        }
+        } */
         #errorDisplay {
             color: red;
             margin-top: 5px;
@@ -69,12 +69,44 @@
         <button id="trackButton">Track Satellite</button>
         <button id="clearButton">Clear Track</button>
     </div>
-    <div id="satdata">
-        <label for="lat">Latitude</label>
-        <label for="lon">Longitude</label>
+    <div id="satdata" class="satdata">
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">Satellite 
+                <span><img style='display: inline; filter: invert();height: 16px;' src="resources/satellite.png"></span>
+                <br><span id="sat-name">stuff</span>
+            </li>
+            <li class="list-group-item">Latitude:
+                <br><span id="sat-lat"></span>°
+            </li>
+            <li class="list-group-item">Longitude:
+                <br><span id="sat-lon"></span>°
+            </li>
+            <li class="list-group-item">Azimuth:
+                <br><span id="sat-az"></span>°
+            </li>
+            <li class="list-group-item">Elevation:
+                <br><span id="sat-el"></span>
+            </li>
+            <li class="list-group-item">Height:
+                <br><span id="sat-ht"></span>
+            </li>
+            <li class="list-group-item">Range:
+                <br><span id="sat-rng"></span>
+            </li>
+            <li class="list-group-item">In View:
+                <br><span id="sat-view"></span>
+            </li>
+            <li class="list-group-item">Keplarian Age:
+                <br><span id="sat-kep"></span>
+            </li>
+            <li class="list-group-item">Next Pass:
+                <br><span id="sat-next"></span>
+            </li>
+        </ul>
     </div>
     <div id="passdata">
         <p>PASS DATA</p>
+        <div id="passbtns"></div>
     </div>
 
     <script>
@@ -159,19 +191,42 @@
                 }
                 trackedEntity = viewer.entities.add({
                     name: 'Satellite',
+                    id: 'satellite',
                     position: positionProperty,
                     point: {
                         pixelSize: 10,
                         color: Cesium.Color.RED,
                     },
                     path: {
-                        resolution: 120,
+                        resolution: 10, // Resolution in seconds - lower value means smoother path during animation
                         material: new Cesium.PolylineGlowMaterialProperty({
-                            glowPower: 0.3,
+                            glowPower: 0.2,
                             color: Cesium.Color.YELLOW,
                         }),
                         width: 3,
+                        // --- KEY CHANGES FOR DYNAMIC PATH ---
+                        leadTime: duration, // Do not show path ahead of current time
+                        trailTime: duration, // Show path behind current time for the full duration
                     },
+                    // {
+                    //     "show": [
+                    //         {
+                    //             "interval": `${start}/${stop}`,
+                    //             "boolean": true
+                    //         }
+                    //     ],
+                    //     resolution: 120,
+                    //     "material":{
+                    //         "solidColor":{
+                    //         "color":{
+                    //             "rgba":[
+                    //             0,255,255,255
+                    //             ]
+                    //         }
+                    //         }
+                    //     },
+                    //     width: 3,
+                    // },
                 });
 
                 viewer.trackedEntity = trackedEntity;
@@ -182,7 +237,7 @@
             }
         }
 
-      function clearTrack() {
+        function clearTrack() {
             if (trackedEntity) {
                 viewer.entities.remove(trackedEntity);
                 trackedEntity = null;
@@ -191,6 +246,45 @@
              document.getElementById('errorDisplay').textContent = "";
         }
 
+        function trackSatelliteButton() {
+            const tleData = document.getElementById('tleInput').value.trim();
+            const lines = tleData.split('\n').map(line => line.trim());
+
+            if (lines.length < 2 || lines.length > 3) {
+              document.getElementById('errorDisplay').textContent = "Invalid TLE format: TLE must have 2 or 3 lines.";
+              return;
+            }
+            if (lines.length === 3) {
+              lines.shift();
+            }
+
+            function isValidTLELine(line) {
+                if (line.length !== 69) {
+                    return false;
+                }
+
+                let checksum = 0;
+                for (let i = 0; i < 68; i++) {
+                    const char = line[i];
+                    if (char >= '0' && char <= '9') {
+                        checksum += parseInt(char, 10);
+                    } else if (char === '-') {
+                        checksum += 1; // Minus sign contributes 1
+                    }
+                    // Ignore spaces and plus signs; they don't contribute to the checksum
+                }
+
+                const expectedChecksum = parseInt(line[68], 10);
+                return (checksum % 10) === expectedChecksum;
+            }
+
+            if (!isValidTLELine(lines[0]) || !isValidTLELine(lines[1])) {
+              document.getElementById('errorDisplay').textContent = "Invalid TLE format: Checksum(s) failed.";
+              return;
+            }
+
+            trackSatellite(lines[0], lines[1]);
+        }
 
         document.getElementById('trackButton').addEventListener('click', function() {
             const tleData = document.getElementById('tleInput').value.trim();
@@ -246,6 +340,16 @@
         // console.log(my_JSON_object.groundstations[0].site);
         
         orbit = new Orbit(name,defaultTLE);
+
+        //Track Default Satllite
+        trackSatelliteButton();
+
+        //Update Stats
+        let position = null;
+        // trackedEntity.position.getValue(Cesium.JulianDate.now(),position);
+        
+        var pos = viewer.entities.getById("satellite").position.getValue(Cesium.JulianDate.now());
+        console.log("Data: ");
 
         //Compute Pass Data
         var data = [];
