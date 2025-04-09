@@ -81,26 +81,26 @@
             <li class="list-group-item">Longitude:
                 <br><span id="sat-lon"></span>°
             </li>
+            <li class="list-group-item">Height:
+                <br><span id="sat-ht"></span> km
+            </li>
+            <li class="list-group-item">Next Pass:
+                <br><span id="sat-next"></span>
+            </li>
+            <li class="list-group-item">In View:
+                <br><span id="sat-view"></span>
+            </li>
             <li class="list-group-item">Azimuth:
                 <br><span id="sat-az"></span>°
             </li>
             <li class="list-group-item">Elevation:
                 <br><span id="sat-el"></span>
             </li>
-            <li class="list-group-item">Height:
-                <br><span id="sat-ht"></span>
-            </li>
             <li class="list-group-item">Range:
                 <br><span id="sat-rng"></span>
             </li>
-            <li class="list-group-item">In View:
-                <br><span id="sat-view"></span>
-            </li>
             <li class="list-group-item">Keplarian Age:
                 <br><span id="sat-kep"></span>
-            </li>
-            <li class="list-group-item">Next Pass:
-                <br><span id="sat-next"></span>
             </li>
         </ul>
     </div>
@@ -339,7 +339,8 @@
         var my_JSON_object = JSON.parse(request.responseText);
         // console.log(my_JSON_object.groundstations[0].site);
         
-        orbit = new Orbit(name,defaultTLE);
+        lines = defaultTLE.split("\n");
+        orbit = new Orbit(lines[0],defaultTLE);
 
         //Track Default Satllite
         trackSatelliteButton();
@@ -347,9 +348,6 @@
         //Update Stats
         let position = null;
         // trackedEntity.position.getValue(Cesium.JulianDate.now(),position);
-        
-        var pos = viewer.entities.getById("satellite").position.getValue(Cesium.JulianDate.now());
-        console.log("Data: ");
 
         //Compute Pass Data
         var data = [];
@@ -372,6 +370,26 @@
         var timeline = build_schedule(container, my_JSON_object.groundstations, data, options);
         
         plotSitesFromJson(my_JSON_object.groundstations, viewer);
+
+        var satInView_Bool = false;
+        document.getElementById("sat-name").innerHTML = orbit.name;
+        viewer.clock.onTick.addEventListener(function(clock){
+            const currentTime = viewer.clock.currentTime;
+
+            pos = orbit.positionGeodetic(Cesium.JulianDate.toDate(currentTime));
+            document.getElementById("sat-lat").innerHTML = parseFloat(pos.latitude).toFixed(2);
+            document.getElementById("sat-lon").innerHTML = parseFloat(pos.longitude).toFixed(2);
+            document.getElementById("sat-ht").innerHTML = parseFloat(pos.height/1000).toFixed(2);
+
+            //
+            if (satInView_Bool) {
+                
+            } else {
+                
+                document.getElementById("sat-az").innerHTML = `<p class="notInPass">N/A</p>`; 
+            }
+
+        });
 
     </script>
 </body>
