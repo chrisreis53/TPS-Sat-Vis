@@ -17,7 +17,7 @@ function plotSitesFromJson(jsonData, viewer) {
         } else {
             sites = jsonData;
         }
-        console.log(sites);
+        // console.log(sites);
 
         if (!Array.isArray(sites)) {
             throw new Error("JSON data must be an array of site objects.");
