@@ -99,9 +99,9 @@
             <li class="list-group-item">Range:
                 <br><span id="sat-rng"></span>
             </li>
-            <li class="list-group-item">Keplarian Age:
+            <!-- <li class="list-group-item">Keplarian Age:
                 <br><span id="sat-kep"></span>
-            </li>
+            </li> -->
         </ul>
     </div>
     <div id="passdata">
@@ -358,6 +358,9 @@
                 data.push(element);
             });
         });
+        // console.log("Unsorted: " + data);
+        const sortedPasses = sortPassesByStartTime(data);
+        
 
         //Add Pass Schedule to scene:
         var container = document.getElementById("passdata");
@@ -385,8 +388,12 @@
             if (satInView_Bool) {
                 
             } else {
-                
-                document.getElementById("sat-az").innerHTML = `<p class="notInPass">N/A</p>`; 
+                document.getElementById("sat-view").innerHTML = "N/A";
+                document.getElementById("sat-az").innerHTML = "N/A";
+                document.getElementById("sat-el").innerHTML = "N/A";
+                document.getElementById("sat-rng").innerHTML = "N/A";
+                document.getElementById("sat-el").innerHTML = "N/A";
+                // document.getElementById("sat-kep").innerHTML = "0";
             }
 
         });
