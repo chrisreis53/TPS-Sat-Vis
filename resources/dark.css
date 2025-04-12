@@ -147,3 +147,46 @@ div.vis-readonly {
     border-color: green;
     font-weight: bold;
 }
+
+#ground-track-container {
+    /* You might want to position this container */
+    margin: 20px;
+    border: 1px solid whitesmoke; /* Border for the container */
+    position: fixed;
+    top: 25%; /* Adjust as needed */
+    right: 10px;
+    z-index: 1;
+    background-color: rgba(30, 30, 30, 0.5);  
+
+}
+.map-background {
+    fill: rgba(30, 30, 30, 0.5); /* Dark background for the map area */
+}
+.graticule {
+     fill: none;
+     stroke: #555; /* Slightly lighter grid lines */
+     stroke-width: 0.5px;
+     stroke-opacity: 0.5;
+ }
+.land {
+    fill: none; /* Landmasses transparent */
+    stroke: whitesmoke;
+    stroke-opacity: 0.5; /* 50% opacity for borders */
+    stroke-width: 0.7px;
+}
+.ground-track {
+    fill: none;
+    stroke: #ffcc66; /* Yellow/Orange track */
+    stroke-width: 1.5px;
+    stroke-opacity: 0.8;
+}
+.satellite-marker {
+    fill: #ff6666;  /* Reddish marker */
+    stroke: whitesmoke;
+    stroke-width: 1px;
+    opacity: 0.9;
+}
+.info-text {
+    fill: whitesmoke;
+    font-size: 0.8em;
+}

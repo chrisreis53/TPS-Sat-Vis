@@ -46,7 +46,7 @@ function plotSitesFromJson(jsonData, viewer) {
             // Create a point entity for each site
             viewer.entities.add({
                 name: site.name, // Use the site's name as the entity's name
-                position: Cesium.Cartesian3.fromDegrees(site.site.longitude, site.site.latitude, height),
+                position: Cesium.Cartesian3.fromDegrees(site.site.longitude, site.site.latitude, height*10),
                 // point: {
                 //     pixelSize: 10,
                 //     color: Cesium.Color.BLUE, // Choose a color for the points

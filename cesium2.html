@@ -8,9 +8,13 @@
     <script src="https://visjs.github.io/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/satellite.js@^5.0.0/dist/satellite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/satellite.js@^5.0.0/dist/satellite.min.js"></script>
     <script src="Orbit.js"></script>
     <script src="inc/czml_writer.js"></script>
     <script src="inc/scheduler.js"></script>
+    <script src="inc/d3map.js"></script>
     <link rel="stylesheet" href="./resources/dark.css">
     <style>
         /* (Same styles as before) */
@@ -110,6 +114,7 @@
             Loading passes...
         </div>
     </div>
+    <div id="ground-track-container"></div>
     <div id="passdata">
         <p>PASS DATA</p>
         <div id="passbtns"></div>
@@ -131,7 +136,7 @@
             terrain: Cesium.Terrain.fromWorldTerrain(),
             clockViewModel: new Cesium.ClockViewModel(clock),
             timeline:false,
-            animation:false,
+            animation:true,
         });
 
         let trackedEntity = null;
@@ -379,6 +384,19 @@
         var timeline = build_schedule(container, my_JSON_object.groundstations, data, options);
         
         plotSitesFromJson(my_JSON_object.groundstations, viewer);
+
+        // URL for world map data (TopoJSON format recommended)
+        const worldMapUrl = "https://unpkg.com/world-atlas@2/countries-110m.json"; // Or use countries-50m.json for more detail
+        // Call the function
+        createGroundTrackMap(
+            "#ground-track-container", // Where to put the map
+            lines[1],
+            lines[2],
+            worldMapUrl,
+            350, // Width of the map
+            225  // Height of the map
+        );
+
 
         var satInView_Bool = false;
         document.getElementById("sat-name").innerHTML = orbit.name;
