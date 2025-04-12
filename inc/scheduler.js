@@ -212,3 +212,44 @@ function displayUpcomingPasses(sortedPasses, maxPassesToShow = 10) {
     }
 
 }
+
+/**
+ * Finds the next upcoming pass from a sorted array of pass objects.
+ * Assumes the input array is already sorted by the 'start' property (ascending).
+ *
+ * @param {Array<Object>} sortedPassesArray The pre-sorted array of pass objects.
+ * Each object needs a 'start' property (numeric timestamp in milliseconds).
+ * @returns {Object|null} The pass object for the next upcoming pass,
+ * or null if no future passes are found in the array.
+ */
+function getNextUpcomingPass(sortedPassesArray) {
+    // 1. Validate Input
+    if (!Array.isArray(sortedPassesArray)) {
+      console.error("Error: Input must be a sorted array.");
+      return null;
+    }
+  
+    // 2. Get Current Time (in milliseconds since epoch)
+    const nowMillis = new Date().getTime();
+    // console.log(`Current Time (ms): ${nowMillis} (${new Date().toLocaleString()})`); // For debugging
+  
+    // 3. Iterate through the sorted passes
+    for (const pass of sortedPassesArray) {
+      // Basic check for a valid 'start' property
+      if (typeof pass?.start !== 'number') {
+        console.warn("Skipping pass object with invalid or missing 'start' property:", pass);
+        continue; // Skip to the next pass object
+      }
+  
+      // Since the array is sorted, the first pass with a start time
+      // greater than the current time is the next upcoming one.
+      if (pass.start > nowMillis) {
+        // console.log(`Found next pass starting at ${pass.start} (${new Date(pass.start).toLocaleString()})`); // For debugging
+        return pass; // Return the entire pass object
+      }
+    }
+  
+    // 4. If the loop finishes, no upcoming passes were found
+    // console.log("No upcoming passes found in the list."); // For debugging
+    return null;
+  }  
