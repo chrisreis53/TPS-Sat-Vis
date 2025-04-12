@@ -40,7 +40,7 @@ div.vis-readonly {
     width: 80%;
     border: 3px solid whitesmoke;
     border-radius: 5px;
-    padding: 10px;
+    padding: 1px;
     top: 4%;
     left: 10%;
     /* transform: translate(%, -50%); */
@@ -68,7 +68,7 @@ div.vis-readonly {
     width: 90%;
     border: 3px solid whitesmoke;
     border-radius: 5px;
-    padding: 10px;
+    padding: 5px;
     bottom: 100px;
     left: 50%;
     transform: translate(-55%, -50%);
@@ -79,3 +79,68 @@ div.vis-readonly {
     background-color: rgba(30, 30, 30, 0.5);  
 }
 
+#pass-display-box {
+    position: fixed;
+    top: 25%; /* Adjust as needed */
+    left: 10px;
+    width: 110px; /* Adjust width */
+    max-height: 400px; /* Limit height and allow scrolling */
+    overflow-y: auto; /* Add scrollbar if content exceeds max-height */
+    background-color: rgba(30, 30, 30, 0.5);  
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid whitesmoke;
+    z-index: 1; /* Ensure it's above the map */
+    font-size: 0.9em;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+#pass-display-box h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    text-align: center;
+    border-bottom: 1px solid whitesmoke;
+    padding-bottom: 5px;
+    color: whitesmoke;
+}
+
+#pass-display-content {
+     /* Styles for the content area */
+}
+
+.pass-entry {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed whitesmoke; /* Separator line */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space out site and time */
+    align-items: center;
+}
+
+.pass-entry:last-child {
+    border-bottom: none; /* No line after the last entry */
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+
+.pass-site {
+    font-weight: bold;
+    margin-right: 10px; /* Space between site and countdown */
+    flex-shrink: 0; /* Prevent site name from shrinking */
+    color: whitesmoke;
+}
+
+.pass-countdown {
+    font-family: 'Courier New', Courier, monospace; /* Monospace for timer */
+    background-color: #e0e0e0;
+    padding: 2px 5px;
+    border-radius: 3px;
+    /* flex-grow: 1; Allow countdown to take remaining space if needed */
+    text-align: right;
+}
+.pass-started {
+    color: green;
+    font-weight: bold;
+}

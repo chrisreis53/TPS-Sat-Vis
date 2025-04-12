@@ -90,3 +90,125 @@ function sortPassesByStartTime(passesArray) {
     // 3. Return the sorted array (which is the same array instance passed in).
     return passesArray;
 }
+
+// --- Variable to hold the interval ID ---
+let countdownIntervalId = null;
+
+/**
+ * Formats a time difference in milliseconds into HH:MM:SS string.
+ * @param {number} ms - Time difference in milliseconds.
+ * @returns {string} Formatted time string (HH:MM:SS) or "Started".
+ */
+function formatTimeDifference(ms) {
+    if (ms <= 0) {
+        return "Started"; // Or "Passing"
+    }
+
+    let totalSeconds = Math.floor(ms / 1000);
+    let hours = Math.floor(totalSeconds / 3600);
+    totalSeconds %= 3600;
+    let minutes = Math.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+
+    // Pad with leading zeros
+    const hoursStr = String(hours).padStart(2, '0');
+    const minutesStr = String(minutes).padStart(2, '0');
+    const secondsStr = String(seconds).padStart(2, '0');
+
+    return `${hoursStr}:${minutesStr}:${secondsStr}`;
+}
+
+/**
+ * Updates the countdown timers in the display box.
+ */
+function updateCountdowns() {
+    const nowMillis = new Date().getTime();
+    const countdownElements = document.querySelectorAll('#pass-display-content .pass-countdown');
+
+    countdownElements.forEach(span => {
+        const startTimeMillis = parseInt(span.dataset.startTime, 10); // Get start time from data attribute
+
+        if (!isNaN(startTimeMillis)) {
+            const diffMillis = startTimeMillis - nowMillis;
+            span.textContent = formatTimeDifference(diffMillis);
+
+            // Optional: Change style or text when pass starts
+            if (diffMillis <= 0) {
+                    span.classList.add('pass-started'); // Add class for styling
+                    // Maybe remove the data attribute to stop updating this specific timer
+                    // delete span.dataset.startTime;
+            } else {
+                    span.classList.remove('pass-started'); // Ensure class is removed if time resets
+            }
+        }
+    });
+}
+
+/**
+ * Displays upcoming passes in the HTML display box.
+ * @param {Array<Object>} sortedPasses - Array of pass objects, pre-sorted by start time.
+ * @param {number} maxPassesToShow - Maximum number of upcoming passes to display.
+ */
+function displayUpcomingPasses(sortedPasses, maxPassesToShow = 10) {
+    const displayContent = document.getElementById('pass-display-content');
+    if (!displayContent) {
+        console.error("Pass display content element not found!");
+        return;
+    }
+
+    displayContent.innerHTML = ''; // Clear previous content
+    const nowMillis = new Date().getTime();
+    let passesDisplayed = 0;
+
+    for (const pass of sortedPasses) {
+        // Check if the pass end time is in the future (or start time for upcoming)
+        if (pass.start > nowMillis && passesDisplayed < maxPassesToShow) {
+
+                // Validate data needed for display
+                if (typeof pass.site !== 'string' || typeof pass.start !== 'number') {
+                    console.warn("Skipping pass with invalid site or start time:", pass);
+                    continue;
+                }
+
+
+            const passEntryDiv = document.createElement('div');
+            passEntryDiv.className = 'pass-entry';
+
+            const siteSpan = document.createElement('span');
+            siteSpan.className = 'pass-site';
+            siteSpan.textContent = pass.site; // Display site abbreviation
+
+            const countdownSpan = document.createElement('span');
+            countdownSpan.className = 'pass-countdown';
+            // Store the start time on the element for the update function
+            countdownSpan.dataset.startTime = pass.start;
+
+            // Calculate and set initial countdown text
+            const initialDiffMillis = pass.start - nowMillis;
+            countdownSpan.textContent = formatTimeDifference(initialDiffMillis);
+
+            passEntryDiv.appendChild(siteSpan);
+            passEntryDiv.appendChild(countdownSpan);
+            displayContent.appendChild(passEntryDiv);
+
+            passesDisplayed++;
+        }
+    }
+
+    if (passesDisplayed === 0) {
+        displayContent.textContent = "No upcoming passes found.";
+    }
+
+    // --- Start or restart the update interval ---
+    if (countdownIntervalId !== null) {
+        clearInterval(countdownIntervalId); // Clear existing interval if any
+    }
+    // Only start interval if there are passes to count down
+    if (passesDisplayed > 0) {
+        updateCountdowns(); // Run once immediately to show correct initial times
+        countdownIntervalId = setInterval(updateCountdowns, 1000); // Update every second
+    } else {
+        countdownIntervalId = null; // No need for an interval if nothing is displayed
+    }
+
+}

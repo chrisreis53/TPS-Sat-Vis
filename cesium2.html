@@ -104,6 +104,12 @@
             </li> -->
         </ul>
     </div>
+    <div id="pass-display-box">
+        <h2>Upcoming Passes</h2>
+        <div id="pass-display-content">
+            Loading passes...
+        </div>
+    </div>
     <div id="passdata">
         <p>PASS DATA</p>
         <div id="passbtns"></div>
@@ -360,7 +366,7 @@
         });
         // console.log("Unsorted: " + data);
         const sortedPasses = sortPassesByStartTime(data);
-        
+        displayUpcomingPasses(sortedPasses, 8); // Show the next 8 passes
 
         //Add Pass Schedule to scene:
         var container = document.getElementById("passdata");
