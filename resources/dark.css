@@ -77,6 +77,7 @@ div.vis-readonly {
     font-size: 8pt;
     color: whitesmoke;
     background-color: rgba(30, 30, 30, 0.5);  
+    overflow-y: auto;
 }
 
 #pass-display-box {
@@ -134,7 +135,8 @@ div.vis-readonly {
 
 .pass-countdown {
     font-family: 'Courier New', Courier, monospace; /* Monospace for timer */
-    background-color: #e0e0e0;
+    background-color: rgba(30, 30, 30, 0.9);  
+    color: whitesmoke;
     padding: 2px 5px;
     border-radius: 3px;
     /* flex-grow: 1; Allow countdown to take remaining space if needed */
@@ -142,5 +144,6 @@ div.vis-readonly {
 }
 .pass-started {
     color: green;
+    border-color: green;
     font-weight: bold;
 }
