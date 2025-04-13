@@ -117,7 +117,11 @@
     <div id="ground-track-container"></div>
     <div id="passdata">
         <p>PASS DATA</p>
-        <div id="passbtns"></div>
+        <div id="passbtns">
+            <button id="nowButton">Now</button>
+            <button id="fastFwdButton">FFwd</button>
+            <button id="slowDownButton">Slow</button>
+        </div>
     </div>
 
     <script>
@@ -297,6 +301,19 @@
             trackSatellite(lines[0], lines[1]);
         }
 
+        function fastForward() {
+            viewer.clock.multiplier *= 2;
+        };
+
+        function slowDown() {
+            viewer.clock.multiplier /= 2;
+        };
+
+        function setNow() {
+            viewer.clock.multiplier = 1;
+            viewer.clock.currentTime = Cesium.JulianDate.fromDate(new Date());
+        };
+
         document.getElementById('trackButton').addEventListener('click', function() {
             const tleData = document.getElementById('tleInput').value.trim();
             const lines = tleData.split('\n').map(line => line.trim());
@@ -339,10 +356,23 @@
 
         document.getElementById('clearButton').addEventListener('click', clearTrack);
 
+        document.getElementById('fastFwdButton').addEventListener('click', function() {
+            fastForward();
+        });
+
+        document.getElementById('slowDownButton').addEventListener('click', function() {
+            slowDown();
+        });
+
+        document.getElementById('nowButton').addEventListener('click', function() {
+            setNow();
+        });
+
         const defaultTLE = `AFRL-XVI
 1 56942U 23084L   25044.77485015  .00035141  00000-0  69126-3 0  9996
 2 56942  97.5545 177.0950 0003560 243.9998 116.0885 15.47184083 93305`;
         document.getElementById('tleInput').value = defaultTLE;
+        document.getElementById('controls').style.display = 'none';
 
         var request = new XMLHttpRequest();
         request.open("GET", "./resources/groundstations.json", false);
@@ -369,6 +399,7 @@
                 data.push(element);
             });
         });
+
         // console.log("Unsorted: " + data);
         const sortedPasses = sortPassesByStartTime(data);
         displayUpcomingPasses(sortedPasses, 8); // Show the next 8 passes
