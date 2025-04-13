@@ -122,7 +122,9 @@ function formatTimeDifference(ms) {
  * Updates the countdown timers in the display box.
  */
 function updateCountdowns() {
-    const nowMillis = new Date().getTime();
+    // const nowMillis = new Date().getTime(); //independant of viewer
+    const nowMillis = Cesium.JulianDate.toDate(viewer.clockViewModel.currentTime);
+    console.log(nowMillis);
     const countdownElements = document.querySelectorAll('#pass-display-content .pass-countdown');
 
     countdownElements.forEach(span => {
