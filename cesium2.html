@@ -143,6 +143,8 @@
             animation:true,
         });
 
+        viewer.scene.globe.enableLighting = true;
+
         let trackedEntity = null;
 
         function trackSatellite(tleLine1, tleLine2) {
@@ -159,7 +161,7 @@
                     throw new Error("Failed to parse TLE data.");
                 }
 
-                const duration = 60 * 90; // 90 minutes
+                const duration = 60 * 60 * 24; // Seconds * Minutes * Hours
                 const start = Cesium.JulianDate.now();
                 const stop = Cesium.JulianDate.addMinutes(start, duration, new Cesium.JulianDate());
 
