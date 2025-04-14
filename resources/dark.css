@@ -38,8 +38,8 @@ div.vis-readonly {
     position: fixed;
     margin: 0 auto;
     width: 80%;
-    border: 3px solid whitesmoke;
-    border-radius: 5px;
+    border: 1px solid whitesmoke;
+    border-radius: 1px;
     padding: 1px;
     top: 4%;
     left: 10%;
@@ -66,8 +66,8 @@ div.vis-readonly {
     position: fixed;
     margin: 0 auto;
     width: 90%;
-    border: 3px solid whitesmoke;
-    border-radius: 5px;
+    border: 1px solid whitesmoke;
+    border-radius: 1px;
     padding: 5px;
     bottom: 100px;
     left: 50%;
@@ -89,7 +89,7 @@ div.vis-readonly {
     overflow-y: auto; /* Add scrollbar if content exceeds max-height */
     background-color: rgba(30, 30, 30, 0.5);  
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 1px;
     border: 1px solid whitesmoke;
     z-index: 1; /* Ensure it's above the map */
     font-size: 0.9em;
