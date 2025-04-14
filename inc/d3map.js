@@ -83,7 +83,8 @@ async function createGroundTrackMap(containerSelector, tleLine1, tleLine2, mapDa
 
 
     // Calculate time range: -1 to +3 orbits from now
-    const now = new Date(); // Current time reference
+    // const now = new Date(); // Current time reference
+    const now = Cesium.JulianDate.toDate(viewer.clockViewModel.currentTime); //Current simulator time
     const nowMillis = now.getTime();
     const startTime = new Date(nowMillis - periodMillis * 1);
     const endTime = new Date(nowMillis + periodMillis * 3);
