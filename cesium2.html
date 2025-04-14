@@ -370,9 +370,14 @@
             setNow();
         });
 
+//         const defaultTLE = `AFRL-XVI
+// 1 56942U 23084L   25044.77485015  .00035141  00000-0  69126-3 0  9996
+// 2 56942  97.5545 177.0950 0003560 243.9998 116.0885 15.47184083 93305`;
+
         const defaultTLE = `AFRL-XVI
-1 56942U 23084L   25044.77485015  .00035141  00000-0  69126-3 0  9996
-2 56942  97.5545 177.0950 0003560 243.9998 116.0885 15.47184083 93305`;
+1 56942U 23084L   25104.16230751  .00096073  00000+0  14888-2 0  9995
+2 56942  97.5600 239.3630 0002581  28.7255 331.4140 15.53685454102506`;
+
         document.getElementById('tleInput').value = defaultTLE;
         document.getElementById('controls').style.display = 'none';
 
@@ -402,7 +407,7 @@
             });
         });
 
-        // console.log("Unsorted: " + data);
+        // console.log(data);
         const sortedPasses = sortPassesByStartTime(data);
         displayUpcomingPasses(sortedPasses, 8); // Show the next 8 passes
 
@@ -422,6 +427,16 @@
         const worldMapUrl = "https://unpkg.com/world-atlas@2/countries-110m.json"; // Or use countries-50m.json for more detail
         // Call the function
         createGroundTrackMap(
+            "#ground-track-container", // Where to put the map
+            lines[1],
+            lines[2],
+            worldMapUrl,
+            350, // Width of the map
+            225  // Height of the map
+        );
+        
+        //Update every minute
+        mapUpdateIntervalId = setInterval(createGroundTrackMap,60000,
             "#ground-track-container", // Where to put the map
             lines[1],
             lines[2],
