@@ -232,7 +232,8 @@ function getNextUpcomingPass(sortedPassesArray) {
     }
   
     // 2. Get Current Time (in milliseconds since epoch)
-    const nowMillis = new Date().getTime();
+    // const nowMillis = new Date().getTime();
+    const nowMillis = Cesium.JulianDate.toDate(viewer.clockViewModel.currentTime);
     // console.log(`Current Time (ms): ${nowMillis} (${new Date().toLocaleString()})`); // For debugging
   
     // 3. Iterate through the sorted passes
